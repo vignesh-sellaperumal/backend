@@ -27,7 +27,7 @@ router.route('/add').post((req,res) => {
     const tag = req.body.tag;
     const thought = req.body.thought;
     const username = req.body.username;
-    const time = req.body.timenow;
+    const time = req.body.time;
     const newExercise = new Exercise({ 
         tag,
         thought,

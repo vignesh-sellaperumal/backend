@@ -13,34 +13,33 @@ router.route('/add').post((req,res) => {
     const username = req.body.username;
     const about = req.body.about;
     const password = req.body.password;
-    const login = req.body.login;
 
-    const newUser = new Details({email, username, about, password, login});
+    var transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'trendmateapp@gmail.com',
+        pass: 'V*gn#sh@456'
+      }
+    });
+    var mailOptions = {
+      to: email,
+      subject: 'TrendMateApp',
+      html: '<h3>Welcome to <i>Trendmate</i> family :)</h3>' 
+    };
+    
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+
+    const newUser = new Details({email, username, about, password});
 
     newUser.save() 
         .then(() => res.json('User added!'))
         .catch(err => res.status(400).json('Error: '+err));
-        
-        var transporter = nodemailer.createTransport({
-          service: 'gmail',
-          auth: {
-            user: 'trendmateapp@gmail.com',
-            pass: 'V*gn#sh@456'
-          }
-        });
-        var mailOptions = {
-          to: email,
-          subject: 'TrendMateApp',
-          html: '<h3>Welcome to <i>Trendmate</i> family :)</h3>' 
-        };
-        
-        transporter.sendMail(mailOptions, function(error, info){
-          if (error) {
-            console.log(error);
-          } else {
-            console.log('Email sent: ' + info.response);
-          }
-        });
 });
 
 router.route('/send').post((req, res) => {
@@ -82,22 +81,6 @@ router.route('/modify/:email').post((req, res) => {
               .then(() => res.json('Password updated!'))
               .catch(err => res.status(400).json('Error: '+err));
       })
-      .catch(err => res.status(400).json('Error: '+err));
-});
-router.route('/status/:username').post((req, res) => {
-  Details.findOne({"username" : req.params.username})
-      .then(detail => {
-          detail.login = req.body.login;
-
-              detail.save()
-              .then(() => res.json('Status updated!'))
-              .catch(err => res.status(400).json('Error: '+err));
-      })
-      .catch(err => res.status(400).json('Error: '+err));
-});
-router.route('/finduser/:username').get((req, res) => {
-  Details.findOne({"username" : req.params.username})
-      .then((detail) => res.json(detail))
       .catch(err => res.status(400).json('Error: '+err));
 });
 

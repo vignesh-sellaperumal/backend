@@ -23,10 +23,6 @@ const detailsSchema = new Schema({
         type: String,
         required: true,
         minlength: 3
-    },
-    login: {
-        type: String,
-        required: true
     }
 }, {
     timestamps:true, 
