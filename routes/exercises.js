@@ -6,6 +6,11 @@ router.route('/').get((req, res) => {
         .then(exercises => res.json(exercises))
         .catch(err => res.status(400).json('Error: '+err));
 });
+router.route('/personal/:username').get((req, res) => {
+    Exercise.find({"username" : req.params.username}).sort({"createdAt" : -1})
+        .then(exercises => res.json(exercises))
+        .catch(err => res.status(400).json('Error: '+err));
+});
 
 router.route('/top').get((req, res) => {
     var now = new Date();
@@ -46,9 +51,9 @@ router.route('/:id').get((req, res) => {
         .catch(err => res.status(400).json('Error: '+err));
 });
 
-router.route('/:id').delete((req, res) => {
+router.route('/remove/:id').delete((req, res) => {
     Exercise.findByIdAndDelete(req.params.id)
-        .then(() => res.json('Exercise deleted.'))
+        .then(() => res.json('Successfully deleted!'))
         .catch(err => res.status(400).json('Error: '+err));
 });
 
