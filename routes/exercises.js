@@ -15,7 +15,7 @@ router.route('/personal/:username').get((req, res) => {
 router.route('/top').get((req, res) => {
     var now = new Date();
     if(now.getDate() == 1)
-        var yesterday = new Date(now.getFullYear(), now.getMonth(), 30);
+        var yesterday = new Date(now.getFullYear(), now.getMonth()-1, 30);
     else
         var yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate()-2);
     Exercise.aggregate([
